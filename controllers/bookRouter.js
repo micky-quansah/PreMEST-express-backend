@@ -1,16 +1,26 @@
 const express = require('express');
 const User = require('../models/userModel');
+const tokenAuth = require('./tokenAuthentication');
 
 function routes(Book) {
   const bookRouter = express.Router();
 
   /* returns all the books in the collection */
 
-  bookRouter.route('/books')
-    .post(async (req, res) => {
+  bookRouter
+    // eslint-disable-next-line consistent-return
+    .post('/', async (req, res) => {
       const { body } = req;
 
-      const user = await User.findById(body.userId);
+      const decodedToken = tokenAuth(req);
+
+      // eslint-disable-next-line no-undef
+      if (decodedToken === 'error') {
+        console.log(decodedToken);
+        return res.status(401).json(decodedToken);
+      }
+
+      const user = await User.findById(decodedToken.id);
 
       const book = new Book({
         title: body.title,
@@ -23,12 +33,14 @@ function routes(Book) {
 
       const savedNote = await book.save();
 
+      res.send(savedNote);
+
       // eslint-disable-next-line no-underscore-dangle
-      User.notes = user.notes.concat(savedNote._id);
+      /* User.notes = user.notes.concat(savedNote._id);
       await user.save();
-      return res.status(201).json(book);
+      return res.status(201).json(book); */
     })
-    .get((req, res) => {
+    .get('/', (req, res) => {
       Book.find((err, books) => {
         if (err) {
           return res.send(err);
@@ -74,8 +86,8 @@ function routes(Book) {
 
   /* get individual book */
 
-  bookRouter.route('/books/:bookId')
-    .delete((req, res) => {
+  bookRouter
+    .delete('/books/:bookId', (req, res) => {
       req.book.remove((err) => {
         if (err) {
           return res.send(err);
@@ -83,7 +95,9 @@ function routes(Book) {
         return res.sendStatus(204);
       });
     })
-    .get((req, res) => { res.json(req.body); });
+    .get('/books/:bookId', (req, res) => {
+      res.json(req.book);
+    });
 
   return bookRouter;
 }

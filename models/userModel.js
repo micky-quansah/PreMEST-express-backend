@@ -24,9 +24,9 @@ userSchema.set('toJSON', {
   transform: (document, returnedObject) => {
     // eslint-disable-next-line no-underscore-dangle
     returnedObject.id = returnedObject._id.toString;
-    // delete returnedObject._id;
+    delete returnedObject._id;
     delete returnedObject.__v;
-    delete returnedObject.passwordHash;
+    // delete returnedObject.passwordHash;
   },
 });
 

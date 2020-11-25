@@ -9,6 +9,7 @@ const port = process.env.PORT;
 const Book = require('./models/bookModel');
 const bookRouter = require('./controllers/bookRouter')(Book);
 const usersRouter = require('./controllers/users');
+const authorRouter = require('./controllers/authorRouter');
 
 const config = {
   useNewUrlParser: true,
@@ -23,7 +24,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use('/admin', usersRouter);
-app.use('/', bookRouter);
+app.use('/authors', authorRouter);
+app.use('/books', bookRouter);
 
 app.listen(port, () => {
   // eslint-disable-next-line no-console
