@@ -9,7 +9,7 @@ autherRouter
     res.json(authors);
   });
 
-autherRouter.use('/author/:authorId', (req, res, next) => {
+autherRouter.use('/:authorId', (req, res, next) => {
   Author.findById(req.params.authorId, (err, author) => {
     if (err) {
       return res.send(err);
@@ -23,7 +23,7 @@ autherRouter.use('/author/:authorId', (req, res, next) => {
 });
 
 autherRouter
-  .delete('/author/:authorId', (req, res) => {
+  .delete('/:authorId', (req, res) => {
     req.author.remove((err) => {
       if (err) {
         return res.send(err);
@@ -31,7 +31,7 @@ autherRouter
       return res.sendStatus(204);
     });
   })
-  .get('/author/:authorId', (req, res) => {
+  .get('/:authorId', (req, res) => {
     res.json(req.author);
   });
 
