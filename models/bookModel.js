@@ -18,14 +18,12 @@ const bookModel = new Schema({
 bookModel.set('toJSON', {
   transform: (document, returnedObject) => {
     // eslint-disable-next-line no-underscore-dangle
-    returnedObject.id = returnedObject.user._id.toString;
     // delete returnedObject._id;
     // eslint-disable-next-line no-underscore-dangle
+    delete returnedObject._id;
+    // eslint-disable-next-line no-underscore-dangle
     delete returnedObject.__v;
-    delete returnedObject.user.passwordHash;
-    delete returnedObject.user.name;
-    delete returnedObject.user.username;
-    delete returnedObject.user.notes;
+    delete returnedObject.user;
   },
 });
 

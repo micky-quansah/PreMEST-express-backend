@@ -23,6 +23,14 @@ autherRouter.use('/author/:authorId', (req, res, next) => {
 });
 
 autherRouter
+  .delete('/author/:authorId', (req, res) => {
+    req.author.remove((err) => {
+      if (err) {
+        return res.send(err);
+      }
+      return res.sendStatus(204);
+    });
+  })
   .get('/author/:authorId', (req, res) => {
     res.json(req.author);
   });

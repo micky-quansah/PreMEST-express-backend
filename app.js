@@ -10,6 +10,7 @@ const Book = require('./models/bookModel');
 const bookRouter = require('./controllers/bookRouter')(Book);
 const usersRouter = require('./controllers/users');
 const authorRouter = require('./controllers/authorRouter');
+const tokenVarify = require('./controllers/tokenVarification');
 
 const config = {
   useNewUrlParser: true,
@@ -24,8 +25,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 app.use('/admin', usersRouter);
-app.use('/authors', authorRouter);
-app.use('/books', bookRouter);
+app.use('/authors', tokenVarify, authorRouter);
+app.use('/books', tokenVarify, bookRouter);
 
 app.listen(port, () => {
   // eslint-disable-next-line no-console

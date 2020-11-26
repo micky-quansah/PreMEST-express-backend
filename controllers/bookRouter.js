@@ -1,6 +1,5 @@
 const express = require('express');
 const User = require('../models/userModel');
-const tokenAuth = require('./tokenAuthentication');
 
 function routes(Book) {
   const bookRouter = express.Router();
@@ -12,13 +11,7 @@ function routes(Book) {
     .post('/', async (req, res) => {
       const { body } = req;
 
-      const decodedToken = tokenAuth(req);
-
-      // eslint-disable-next-line no-undef
-      if (decodedToken === 'error') {
-        console.log(decodedToken);
-        return res.status(401).json(decodedToken);
-      }
+      const decodedToken = body.token;
 
       const user = await User.findById(decodedToken.id);
 
@@ -40,13 +33,9 @@ function routes(Book) {
       await user.save();
       return res.status(201).json(book); */
     })
-    .get('/', (req, res) => {
-      Book.find((err, books) => {
-        if (err) {
-          return res.send(err);
-        }
-        return res.json(books);
-      });
+    .get('/', async (req, res) => {
+      const books = await Book.find({});
+      res.json(books);
     });
 
   /* make search queries */
