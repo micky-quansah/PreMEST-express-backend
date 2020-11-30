@@ -7,11 +7,7 @@ const { Schema } = mongoose;
 const authorModel = new Schema({
   name: { type: String },
   rating: { type: String },
-  books: {
-    title: String,
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'Book',
-  },
+  books: { title: String },
   authorId: { type: String },
 });
 

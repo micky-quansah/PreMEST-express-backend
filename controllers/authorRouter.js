@@ -1,6 +1,5 @@
 const express = require('express');
 const Author = require('../models/authorModel');
-const Book = require('../models/bookModel');
 
 const autherRouter = express.Router();
 
@@ -17,6 +16,7 @@ autherRouter.use('/:authorId', (req, res, next) => {
     }
     if (author) {
       req.author = author;
+      console.log(req.author);
       return next();
     }
     return res.sendStatus(404);
@@ -24,20 +24,17 @@ autherRouter.use('/:authorId', (req, res, next) => {
 });
 
 autherRouter
-  .delete('/:authorId', (req, res) => {
+/*   .delete('/:authorId', (req, res) => {
     req.author.remove((err) => {
       if (err) {
         return res.send(err);
       }
       return res.sendStatus(204);
     });
-  })
-  .get('/:authorId', (req, res) => {
-    const author = req.params.authorId;
-    const returnedAuthor = Author.find(author);
-    const { books } = returnedAuthor;
-    const returnedBooks = Book.find(books);
-    res.json(returnedBooks);
+  }) */
+  .get('/:authorId', async (req, res) => {
+    const { books } = req.author;
+    res.json(books);
   });
 
 module.exports = autherRouter;
