@@ -1,5 +1,6 @@
 const express = require('express');
 const Author = require('../models/authorModel');
+const Book = require('../models/bookModel');
 
 const autherRouter = express.Router();
 
@@ -32,7 +33,11 @@ autherRouter
     });
   })
   .get('/:authorId', (req, res) => {
-    res.json(req.author);
+    const author = req.params.authorId;
+    const returnedAuthor = Author.find(author);
+    const { books } = returnedAuthor;
+    const returnedBooks = Book.find(books);
+    res.json(returnedBooks);
   });
 
 module.exports = autherRouter;
