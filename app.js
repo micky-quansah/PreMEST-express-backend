@@ -24,6 +24,9 @@ const booksdb = mongoose.connect(process.env.LOCAL_MONGO_URI, config);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+app.get('/', (req, res) => {
+  res.send('Server working');
+});
 app.use('/admin', usersRouter);
 app.use('/authors', tokenVarify, authorRouter);
 app.use('/books', tokenVarify, bookRouter);

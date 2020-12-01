@@ -8,7 +8,11 @@ const authorModel = new Schema({
   name: { type: String },
   rating: { type: String },
   books: { title: String },
-  authorId: { type: String },
+  authorId: {
+    title: String,
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Book',
+  },
 });
 
 authorModel.set('toJSON', {
